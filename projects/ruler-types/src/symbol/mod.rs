@@ -3,7 +3,6 @@ use std::str::FromStr;
 use unicode_ident::is_xid_continue;
 use ustr::Ustr;
 
-pub struct EVariable {}
 
 pub struct Symbol {
     intern: Ustr,

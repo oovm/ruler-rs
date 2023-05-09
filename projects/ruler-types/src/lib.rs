@@ -7,3 +7,8 @@
 mod graphs;
 mod variable;
 mod symbol;
+mod errors;
+
+pub use crate::errors::{Error, Result};
+pub use crate::symbol::Symbol;
+pub use crate::variable::Variable;
