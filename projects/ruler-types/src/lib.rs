@@ -6,4 +6,4 @@
 
 mod graphs;
 mod variable;
-
+mod symbol;
