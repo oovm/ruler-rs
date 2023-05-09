@@ -1,6 +1,5 @@
 [package]
-name = "ruler"
-publish = false
+name = "ruler-types"
 version = "0.0.0"
 authors = ["Aster <192607617@qq.com>"]
 description = "..."
@@ -12,6 +11,7 @@ edition = "2021"
 exclude = ["package.json", "tests/**"]
 
 [dependencies]
+graph-types = "0.0.4"
 adjacency-list = { version = "0.0.1" }
 
 [dev-dependencies]
