@@ -2,14 +2,17 @@ use std::error::Error;
 use std::fmt::{Display, Formatter};
 use std::ops::Range;
 
-pub type RulerResult<T> = std::result::Result<T, RulerError>;
+/// Result type for Ruler.
+pub type RulerResult<T> = Result<T, RulerError>;
 
 
+/// Error type for Ruler.
 #[derive(Debug, Clone)]
 pub struct RulerError {
     kind: Box<RuleErrorKind>,
 }
 
+/// Error kind for Ruler.
 #[derive(Debug, Clone)]
 pub enum RuleErrorKind {
     SyntaxError {
@@ -43,6 +46,7 @@ impl Display for RuleErrorKind {
 }
 
 impl RulerError {
+    /// Create a new syntax error.
     pub fn syntax_error<S>(message: S, start: usize, end: usize) -> Self
         where
             S: ToString
@@ -57,6 +61,7 @@ impl RulerError {
             }),
         }
     }
+    /// Create a new custom error.
     pub fn custom_error<S>(message: S) -> Self
         where
             S: ToString

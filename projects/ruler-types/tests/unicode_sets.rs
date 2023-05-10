@@ -1,14 +1,14 @@
-use std::fs::{create_dir, create_dir_all, File, OpenOptions};
+use std::fs::{ create_dir_all, File,};
 use std::io::Write;
-use std::path::{Path, PathBuf};
-use std::str::FromStr;
+use std::path::{Path, };
+
 use pex_trie::generate::xid::{XID_CONTINUE, XID_START};
 use pex_trie::UnicodeSet;
 use ruler_types::Symbol;
 
 #[test]
 fn test() -> std::io::Result<()> {
-    let mut here = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
+    let here = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
     create_dir_all(&here)?;
     println!("Export at: {}", here.canonicalize()?.display());
     let mut files = File::create(here.join("unicode_sets.rs"))?;
@@ -21,6 +21,6 @@ fn test() -> std::io::Result<()> {
 
 #[test]
 fn test_symbol() {
-    let symbol = Symbol::new(" a");
+    let symbol = Symbol::new("a ");
     println!("{}", symbol);
 }

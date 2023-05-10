@@ -11,6 +11,12 @@ pub struct Symbol {
     intern: Ustr,
 }
 
+impl<T> From<T> for Symbol where T: AsRef<str> {
+    fn from(value: T) -> Self {
+        Self::new(value.as_ref())
+    }
+}
+
 impl Debug for Symbol {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Symbol({})", self.intern)

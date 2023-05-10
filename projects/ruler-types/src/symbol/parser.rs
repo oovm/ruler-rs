@@ -1,15 +1,15 @@
-
-use pex::{ParseResult, ParseState, StopBecause};
-
-use ucd_trie::TrieSetSlice;
-
 use super::*;
+use pex::{ParseResult, ParseState, StopBecause};
+use ucd_trie::TrieSetSlice;
+use crate::RulerResult;
+
+
 
 
 impl FromStr for Symbol {
     type Err = RulerError;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> RulerResult<Self> {
         match Symbol::parse(ParseState::new(s)) {
             ParseResult::Pending(state, compound) if state.is_empty() => Ok(compound),
             ParseResult::Pending(state, ..) => Err(RulerError::syntax_error("Except end of symbol", state.start_offset, state.start_offset + 1)),
@@ -19,6 +19,7 @@ impl FromStr for Symbol {
 }
 
 impl Symbol {
+    /// Parse new symbol from parse state
     pub fn parse(input: ParseState) -> ParseResult<Self> {
         // no string, avoid accidental memory expansion allocations
         let mut chars = input.rest_text.chars();
