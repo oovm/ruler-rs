@@ -1,7 +1,8 @@
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 use std::str::FromStr;
-use unicode_ident::is_xid_continue;
+use unicode_ident::{is_xid_continue, is_xid_start};
 use ustr::Ustr;
+use crate::RulerError;
 
 
 pub struct Symbol {
@@ -14,23 +15,30 @@ impl Debug for Symbol {
     }
 }
 
-pub enum SymbolError {
-    Empty,
-    Invalid,
+impl Display for Symbol {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.intern)
+    }
 }
 
+
 impl FromStr for Symbol {
-    type Err = SymbolError;
+    type Err = RulerError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.len() == 0 {
-            return Err(SymbolError::Empty);
-        }
-        if !s.chars().next().unwrap().is_xid_continue() {
-            return Err(SymbolError::Invalid);
+        let mut chars = s.chars();
+        match chars.next() {
+            Some(c) => {
+                if is_xid_start(c) {
+                    // ok
+                } else {
+                    return Err(RulerError::Invalid);
+                }
+            }
+            _ => return Err(RulerError::syntax_error()),
         }
         for c in s.chars() {
-            if !c.is_xid_continue() {
+            if !is_xid_continue(c) {
                 return Err(SymbolError::Invalid);
             }
         }
@@ -52,6 +60,9 @@ impl Symbol {
     }
 }
 
+#[test]
 fn test() {
-    let _ = Symbol::new("test");
+    let t1 = Symbol::new("test");
+    let t2 = Symbol::new("test2");
+    println!("{:?}", t1);
 }

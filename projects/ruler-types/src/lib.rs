@@ -9,6 +9,6 @@ mod variable;
 mod symbol;
 mod errors;
 
-pub use crate::errors::{Error, Result};
+pub use crate::errors::{RulerError, RulerResult};
 pub use crate::symbol::Symbol;
 pub use crate::variable::Variable;
