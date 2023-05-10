@@ -1,6 +1,5 @@
 use std::fmt::{Debug, Display};
 use std::str::FromStr;
-use unicode_ident::{is_xid_continue, is_xid_start};
 use ustr::Ustr;
 use crate::RulerError;
 
@@ -35,7 +34,7 @@ impl FromStr for Symbol {
                     return Err(RulerError::Invalid);
                 }
             }
-            _ => return Err(RulerError::syntax_error()),
+            _ => return Err(RulerError::syntax_error("Empty symbol",0, 1)),
         }
         for c in s.chars() {
             if !is_xid_continue(c) {
