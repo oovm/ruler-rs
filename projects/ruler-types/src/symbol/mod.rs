@@ -3,7 +3,10 @@ use std::str::FromStr;
 use ustr::Ustr;
 use crate::RulerError;
 
+#[cfg(feature = "parse")]
+mod parser;
 
+#[derive(Copy, Clone)]
 pub struct Symbol {
     intern: Ustr,
 }
@@ -21,40 +24,22 @@ impl Display for Symbol {
 }
 
 
-impl FromStr for Symbol {
-    type Err = RulerError;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut chars = s.chars();
-        match chars.next() {
-            Some(c) => {
-                if is_xid_start(c) {
-                    // ok
-                } else {
-                    return Err(RulerError::Invalid);
-                }
-            }
-            _ => return Err(RulerError::syntax_error("Empty symbol",0, 1)),
-        }
-        for c in s.chars() {
-            if !is_xid_continue(c) {
-                return Err(SymbolError::Invalid);
-            }
-        }
-        Ok(Self {
-            intern: Ustr::from(s),
-        })
-    }
-}
-
 impl Symbol {
+    /// Create a new symbol from given name.
+    #[track_caller]
     pub fn new(intern: &str) -> Self {
-        if cfg!(debug_assertions) {
-            Self::from_str(intern).unwrap()
-        } else {
-            Self {
-                intern: Ustr::from(intern),
+        if cfg!(debug_assertions) && cfg!(feature = "parse") {
+            match Self::from_str(intern) {
+                Ok(o) => { o }
+                Err(e) => panic!("{e}")
             }
+        } else {
+            Self::new_unchecked(intern)
+        }
+    }
+    pub(crate) fn new_unchecked(intern: &str) -> Self {
+        Self {
+            intern: Ustr::from(intern),
         }
     }
 }

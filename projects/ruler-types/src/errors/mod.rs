@@ -32,8 +32,8 @@ impl Display for RulerError {
 impl Display for RuleErrorKind {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            RuleErrorKind::SyntaxError { message, range: offset } => {
-                write!(f, "SymbolError({offset}): {}", message)
+            RuleErrorKind::SyntaxError { message, range } => {
+                write!(f, "SymbolError: {} at {range:?}", message)
             }
             RuleErrorKind::CustomError { message } => {
                 f.write_str(message)
@@ -49,8 +49,11 @@ impl RulerError {
     {
         Self {
             kind: Box::new(RuleErrorKind::SyntaxError {
-                message: message.into(),
-                range: start,
+                message: message.to_string(),
+                range: Range {
+                    start,
+                    end,
+                },
             }),
         }
     }
@@ -60,7 +63,7 @@ impl RulerError {
     {
         Self {
             kind: Box::new(RuleErrorKind::CustomError {
-                message: message.into(),
+                message: message.to_string(),
             }),
         }
     }

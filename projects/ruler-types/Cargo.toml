@@ -11,16 +11,24 @@ edition = "2021"
 exclude = ["package.json", "tests/**"]
 
 [dependencies]
-pex = "0.0.8"
+ustr = "0.9.0"
+
+
 ucd-trie = "0.1.5"
 #graph-types = "0.0.4"
 #adjacency-list = { version = "0.0.1" }
 
+[dependencies.pex]
+optional = true
+version = "0.0.8"
+
 [dev-dependencies]
+ucd-trie = "0.1.5"
 pex-trie = "0.0.1"
 
 [features]
-default = []
+default = ["parse"]
+parse = ["pex", "pex/ucd-trie"]
 
 [package.metadata.docs.rs]
 all-features = true

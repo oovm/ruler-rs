@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeMap};
 
 pub struct EGraph {
     head_nodes: BTreeMap<usize, usize>,
